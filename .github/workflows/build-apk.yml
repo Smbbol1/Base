@@ -30,7 +30,7 @@ jobs:
           packager: pnpm # <-- ESTA ES LA LÍNEA MÁGICA QUE FALTABA
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build APK
         run: eas build --platform android --profile preview --non-interactive --no-wait
