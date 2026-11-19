@@ -1,8 +1,7 @@
 name: Build Android APK
 
 on:
-  push:
-    branches: [ main ]
+  # Hemos eliminado la sección 'push' para que no se compile solo.
   workflow_dispatch: # Esto te permite ejecutarlo manualmente desde la pestaña Actions
 
 jobs:
@@ -12,11 +11,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18.x
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8
@@ -25,7 +29,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build APK
         run: eas build --platform android --profile preview --non-interactive --no-wait
