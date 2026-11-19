@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      # 1. Generar la carpeta nativa 'android' a partir de la configuración de Expo
+      # 1. Generar la carpeta nativa 'android'
       - name: Expo Prebuild (Generate Android Native Project)
         run: npx expo prebuild --platform android --no-install
 
@@ -37,17 +37,18 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      # 3. Compilar el APK usando Gradle directamente
+      # 3. Compilar el APK usando Gradle (Generando un APK de Debug instalable)
       - name: Build APK with Gradle
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease
+          ./gradlew assembleDebug
 
       # 4. Subir el APK generado a los Artifacts de GitHub (Summary)
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+          name: app-debug-apk
+          # Ojo: La ruta cambia a la carpeta 'debug' porque compilamos en modo Debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
