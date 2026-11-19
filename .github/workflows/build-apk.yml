@@ -27,10 +27,13 @@ jobs:
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
-          packager: pnpm # <-- ESTA ES LA LÍNEA MÁGICA QUE FALTABA
+          packager: pnpm
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
+
+      - name: Init EAS Project
+        run: eas init --account smbbol88s-team --non-interactive
 
       - name: Build APK
         run: eas build --platform android --profile preview --non-interactive --no-wait
